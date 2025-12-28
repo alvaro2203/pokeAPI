@@ -8,9 +8,9 @@ interface usePokemonsHook {
     error: string | null
 }
 
-export const usePokemons = (): usePokemonsHook => {
+export const usePokemons = (limit?: number, offset?: number): usePokemonsHook => {
     const [pokemons, setPokemons] = useState<Pokemon[]>([])
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
@@ -18,7 +18,7 @@ export const usePokemons = (): usePokemonsHook => {
             try {
                 setLoading(true)
                 setError(null)
-                const data = await getPokemons()
+                const data = await getPokemons(limit, offset)
                 const pokemonsWithDetails = await Promise.all(data.map((pokemon: Pokemon) => getPokemonByName(pokemon.name)))
                 setPokemons(pokemonsWithDetails)
             } catch (error) {
@@ -29,7 +29,7 @@ export const usePokemons = (): usePokemonsHook => {
             }
         }
         fetchPokemons()
-    }, [])
+    }, [limit, offset])
 
     return { pokemons, loading, error }
 }
@@ -42,7 +42,7 @@ interface usePokemonHook {
 
 export const usePokemon = (name: string): usePokemonHook => {
     const [pokemon, setPokemon] = useState<Pokemon | null>(null)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -65,4 +65,4 @@ export const usePokemon = (name: string): usePokemonHook => {
     }, [name])
 
     return { pokemon, loading, error }
-}   
+}

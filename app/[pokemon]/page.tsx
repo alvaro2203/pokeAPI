@@ -1,6 +1,7 @@
 "use client";
 
 import Badge from "@/components/Badge";
+import Loader from "@/components/Loader";
 import { usePokemon } from "@/hooks/usePokemons";
 import { typeColors } from "@/lib/consts";
 import Image from "next/image";
@@ -10,24 +11,27 @@ export default function PokemonPage() {
   const { pokemon: pokemonName } = useParams();
   const { pokemon, loading, error } = usePokemon(pokemonName as string);
 
-  if (loading)
-    return <div className="text-2xl font-bold text-white">Loading...</div>;
+  if (loading) return <Loader />;
   if (error || !pokemon)
     return <div className="text-2xl font-bold text-white">Error: {error}</div>;
 
   return (
     <>
+      {/* <Breadcrumb name={pokemon.name} /> */}
       <h1 className="text-4xl font-extrabold uppercase text-center mb-5">
         {pokemon.name}
       </h1>
-      <div className="flex gap-5 items-center justify-center shadow-xl px-2 py-5 rounded-lg bg-linear-to-t to-slate-900">
+
+      <div className="flex gap-5 items-center justify-center px-2 py-5 rounded-lg">
         <div className="flex flex-col items-center">
           <Image
-            src={pokemon.sprites.front_default}
+            src={
+              pokemon.sprites.other?.["official-artwork"].front_default || ""
+            }
             alt={pokemon?.name}
             className="hover:scale-110 transition duration-300"
-            width={256}
-            height={256}
+            width={220}
+            height={220}
           />
           <div className="flex gap-4 items-center">
             {pokemon.types.map((type) => (
