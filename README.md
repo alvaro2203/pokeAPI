@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PokeAPI Web Application
 
-## Getting Started
+A modern, responsive web application built with [Next.js](https://nextjs.org/) and [Tailwind CSS](https://tailwindcss.com/) to explore the Pokémon world using the [PokeAPI](https://pokeapi.co/).
 
-First, run the development server:
+## 🚀 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Pokémon List**: Browse through a paginated list of Pokémon.
+- **Detailed Cards**: View Pokémon details including types and dynamic sprites.
+- **Smart Sprite Selection**: Includes a robust utility to automatically find the best available sprite (Official Artwork > Dream World > Default > Fallback), ensuring no broken images.
+- **Responsive Design**: Optimized for all device sizes with a clean, modern UI.
+- **Context-Based State**: Efficient state management using React Context.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: Next.js 16 (App Router)
+- **UI Library**: React 19
+- **Styling**: Tailwind CSS 4
+- **Icons**: Lucide React
+- **Language**: TypeScript
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js (LTS recommended)
+- npm, yarn, or pnpm
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  Clone the repository:
 
-## Deploy on Vercel
+    ```bash
+    git clone https://github.com/yourusername/pokeapi.git
+    cd pokeapi
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2.  Install dependencies:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    ```bash
+    npm install
+    # or
+    pnpm install
+    ```
+
+3.  Run the development server:
+
+    ```bash
+    npm run dev
+    # or
+    pnpm dev
+    ```
+
+4.  Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 📂 Project Structure
+
+- `app/`: Next.js App Router pages and layouts.
+- `components/`: Reusable UI components (PokemonCard, Badge, etc.).
+- `hooks/`: Custom React hooks (usePokemons, etc.).
+- `interfaces/`: TypeScript definitions for API responses and internal types.
+- `lib/`: Utility constants and helper functions.
+- `services/`: API integration services.
+
+## 🧩 Key Utilities
+
+### Sprite Extraction (`interfaces/sprites.ts`)
+
+The application handles the complexity of PokeAPI's sprite structure using a cleaner utility `getAvailableSprite`. This function:
+
+1.  Prioritizes high-quality "Official Artwork".
+2.  Falls back to "Dream World" vector images.
+3.  Falls back to the standard front default sprite.
+4.  Performs a deep recursive search if standard paths fail.
+5.  Returns a safe placeholder if no sprite is found.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
