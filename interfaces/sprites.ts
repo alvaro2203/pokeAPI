@@ -143,3 +143,43 @@ export interface GenerationVIIISprite {
     front_default: string | StaticImport;
     front_female: string | StaticImport | null;
 }
+
+export const getAvailableSprite = (sprites: PokemonSprites): string => {
+    // Priority 1: Official Artwork
+    if (sprites.other?.["official-artwork"]?.front_default) {
+        return sprites.other["official-artwork"].front_default as string;
+    }
+
+    // Priority 2: Dream World
+    if (sprites.other?.dream_world?.front_default) {
+        return sprites.other.dream_world.front_default as string;
+    }
+
+    // Priority 3: Main default
+    if (sprites.front_default) {
+        return sprites.front_default as string;
+    }
+
+    // Fallback: Recursively find ANY string in the object
+    let found: string | null = null;
+    const traverse = (obj: unknown) => {
+        if (found) return;
+        if (!obj || typeof obj !== "object") return;
+
+        const record = obj as Record<string, unknown>;
+        for (const key in record) {
+            if (found) return;
+            const value = record[key];
+            if (typeof value === "string" && value.startsWith("http")) {
+                found = value;
+                return;
+            } else if (typeof value === "object") {
+                traverse(value);
+            }
+        }
+    };
+
+    traverse(sprites);
+
+    return found || "/placeholder.png";
+};

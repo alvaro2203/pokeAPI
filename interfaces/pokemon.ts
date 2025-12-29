@@ -9,6 +9,11 @@ export * from "./items";
 export * from "./moves";
 export * from "./sprites";
 
+export interface PokemonBase {
+    name: string;
+    url: string;
+}
+
 export interface Pokemon {
     id: number;
     name: string;
