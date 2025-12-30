@@ -44,7 +44,7 @@ export default function Home() {
         <input
           type="text"
           onChange={(e) => setSearch(e.target.value)}
-          className="px-4 py-2 rounded-md border border-gray-300"
+          className="px-4 py-1.5 rounded-md border border-gray-300"
           placeholder="Buscar Pokemon"
         />
       </div>
