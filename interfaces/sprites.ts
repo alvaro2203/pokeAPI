@@ -181,5 +181,5 @@ export const getAvailableSprite = (sprites: PokemonSprites): string => {
 
     traverse(sprites);
 
-    return found || "/placeholder.png";
+    return found || "/placeholder.svg";
 };

@@ -6,21 +6,24 @@ interface usePokemonsHook {
     pokemons: Pokemon[]
     loading: boolean
     error: string | null
+    total: number
 }
 
 export const usePokemons = (limit?: number, offset?: number): usePokemonsHook => {
     const [pokemons, setPokemons] = useState<Pokemon[]>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
+    const [total, setTotal] = useState<number>(0)
 
     useEffect(() => {
         const fetchPokemons = async () => {
             try {
                 setLoading(true)
                 setError(null)
-                const data = await getPokemons(limit, offset)
-                const pokemonsWithDetails = await Promise.all(data.map((pokemon: Pokemon) => getPokemonByName(pokemon.name)))
+                const { results, count } = await getPokemons(limit, offset)
+                const pokemonsWithDetails = await Promise.all(results.map((pokemon: Pokemon) => getPokemonByName(pokemon.name)))
                 setPokemons(pokemonsWithDetails)
+                setTotal(count)
             } catch (error) {
                 console.error("Failed to fetch pokemons:", error)
                 setError("Failed to fetch pokemons")
@@ -31,7 +34,7 @@ export const usePokemons = (limit?: number, offset?: number): usePokemonsHook =>
         fetchPokemons()
     }, [limit, offset])
 
-    return { pokemons, loading, error }
+    return { pokemons, loading, error, total }
 }
 
 interface usePokemonHook {

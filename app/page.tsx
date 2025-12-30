@@ -16,11 +16,18 @@ export default function Home() {
     pokemons: paginatedPokemons,
     loading,
     error,
+    total,
   } = usePokemons(LIMIT, offset);
   const [search, setSearch] = useState<string>("");
 
-  const handlePrevious = () => setOffset(offset - LIMIT);
-  const handleNext = () => setOffset(offset + LIMIT);
+  const totalPages = Math.ceil(total / LIMIT);
+
+  const handleFirstPage = () => setOffset(0);
+  const handleNext = () => offset + LIMIT < total && setOffset(offset + LIMIT);
+  const handlePrevious = () => offset - LIMIT >= 0 && setOffset(offset - LIMIT);
+  const handleLastPage = () => setOffset((totalPages - 1) * LIMIT);
+
+  const currentPage = Math.floor(offset / LIMIT) + 1;
 
   const filteredPokemons = paginatedPokemons.filter((pokemon: Pokemon) =>
     pokemon.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
@@ -31,8 +38,8 @@ export default function Home() {
     return <div className="text-2xl font-bold text-white">Error: {error}</div>;
 
   return (
-    <div className="flex flex-col gap-4 items-center justify-center">
-      <div className="flex gap-3 mb-10 items-center">
+    <div className="flex flex-col gap-3 items-center justify-center">
+      <div className="flex gap-3 items-center">
         <Search className="text-gray-300" size={24} />
         <input
           type="text"
@@ -41,18 +48,27 @@ export default function Home() {
           placeholder="Buscar Pokemon"
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {filteredPokemons.map((pokemon: Pokemon) => (
           <Link href={`/${pokemon.name}`} key={pokemon.name}>
             <PokemonCard pokemon={pokemon} />
           </Link>
         ))}
       </div>
-      <Pagination
-        handlePrevious={handlePrevious}
-        handleNext={handleNext}
-        offset={offset}
-      />
+      <div className="flex justify-between items-center w-full px-6 mt-1 text-gray-400 text-sm">
+        <span>Pokemons totales: {total}</span>
+        <span>
+          Página {currentPage} de {totalPages}
+        </span>
+        <Pagination
+          handleFirstPage={handleFirstPage}
+          handlePrevious={handlePrevious}
+          handleNext={handleNext}
+          handleLastPage={handleLastPage}
+          isPreviousDisabled={offset === 0}
+          isNextDisabled={offset + LIMIT >= total}
+        />
+      </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import Badge from "@/components/Badge";
 import Loader from "@/components/Loader";
 import { usePokemon } from "@/hooks/usePokemons";
+import { getAvailableSprite } from "@/interfaces/sprites";
 import { typeColors } from "@/lib/consts";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -17,7 +18,6 @@ export default function PokemonPage() {
 
   return (
     <>
-      {/* <Breadcrumb name={pokemon.name} /> */}
       <h1 className="text-4xl font-extrabold uppercase text-center mb-5">
         {pokemon.name}
       </h1>
@@ -25,9 +25,7 @@ export default function PokemonPage() {
       <div className="flex gap-5 items-center justify-center px-2 py-5 rounded-lg">
         <div className="flex flex-col items-center">
           <Image
-            src={
-              pokemon.sprites.other?.["official-artwork"].front_default || ""
-            }
+            src={getAvailableSprite(pokemon.sprites)}
             alt={pokemon?.name}
             className="hover:scale-110 transition duration-300"
             width={220}
