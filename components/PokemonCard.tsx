@@ -5,7 +5,7 @@ import { typeColors } from "@/lib/consts";
 
 export default function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
   return (
-    <div className="overflow-hidden flex flex-col gap-2 items-center justify-center p-4 bg-slate-700/5 hover:bg-slate-700/10 rounded shadow-xl hover:shadow-2xl transition duration-300 hover:text-amber-300">
+    <div className="w-[320px] h-[320px] overflow-hidden flex flex-col gap-2 items-center justify-center p-4 bg-slate-700/5 hover:bg-slate-700/10 rounded shadow-xl hover:shadow-2xl transition duration-300 hover:text-amber-300">
       <Image
         src={getAvailableSprite(pokemon.sprites)}
         alt={pokemon.name}
