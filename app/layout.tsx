@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Link from "next/link";
+import { SearchProvider } from "@/context/SearchContext";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Pokédex",
@@ -15,14 +16,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="min-h-screen flex flex-col py-10 bg-linear-to-br to-slate-700">
-          <h1 className="text-6xl font-extrabold uppercase text-amber-300 mb-6 text-center">
-            <Link href="/">Pokédex</Link>
-          </h1>
-          <div className="flex-1 flex flex-col gap-4 items-center justify-center">
-            {children}
+        <SearchProvider>
+          <div className="min-h-screen flex flex-col py-10 bg-linear-to-br to-slate-700">
+            <Header />
+            <div className="flex-1 flex flex-col gap-4 items-center justify-center">
+              {children}
+            </div>
           </div>
-        </div>
+        </SearchProvider>
       </body>
     </html>
   );

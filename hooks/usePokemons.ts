@@ -1,46 +1,69 @@
+import { usePokemonHook, usePokemonsHook } from "@/interfaces/hooks"
 import { Pokemon } from "@/interfaces/pokemon"
-import { getPokemonByName, getPokemons } from "@/services/pokemon"
+import { getPokemonByName, getAllPokemons } from "@/services/pokemon"
 import { useEffect, useState } from "react"
 
-interface usePokemonsHook {
-    pokemons: Pokemon[]
-    loading: boolean
-    error: string | null
-    total: number
-}
 
-export const usePokemons = (limit?: number, offset?: number): usePokemonsHook => {
+export const usePokemons = (limit: number = 20, offset: number = 0, search: string = ""): usePokemonsHook => {
     const [pokemons, setPokemons] = useState<Pokemon[]>([])
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
     const [total, setTotal] = useState<number>(0)
+    const [allPokemons, setAllPokemons] = useState<{ name: string, url: string }[]>([])
+    const [initialLoaded, setInitialLoaded] = useState<boolean>(false)
 
     useEffect(() => {
-        const fetchPokemons = async () => {
+        const loadAll = async () => {
+            try {
+                const { results } = await getAllPokemons()
+                setAllPokemons(results)
+                setInitialLoaded(true)
+            } catch (error) {
+                console.error("Failed to fetch all pokemons:", error)
+                setError("Failed to fetch pokemons list")
+                setLoading(false)
+            }
+        }
+        loadAll()
+    }, [])
+
+    useEffect(() => {
+        if (!initialLoaded) return
+
+        const fetchDetails = async () => {
             try {
                 setLoading(true)
                 setError(null)
-                const { results, count } = await getPokemons(limit, offset)
-                const pokemonsWithDetails = await Promise.all(results.map((pokemon: Pokemon) => getPokemonByName(pokemon.name)))
-                setPokemons(pokemonsWithDetails)
-                setTotal(count)
+
+                const filtered = search
+                    ? allPokemons.filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
+                    : allPokemons
+
+                setTotal(filtered.length)
+
+                // 2. Paginate
+                // Ensure offset is valid for the new filtered list (handled by parent usually, but good to be safe)
+                // If offset is beyond total, we might render empty, which is fine, parent should reset offset.
+                const paginated = filtered.slice(offset, offset + limit)
+
+                // 3. Fetch Details
+                const details = await Promise.all(
+                    paginated.map((p) => getPokemonByName(p.name))
+                )
+                setPokemons(details)
+
             } catch (error) {
-                console.error("Failed to fetch pokemons:", error)
-                setError("Failed to fetch pokemons")
+                console.error("Failed to fetch pokemon details:", error)
+                setError("Failed to fetch pokemon details")
             } finally {
                 setLoading(false)
             }
         }
-        fetchPokemons()
-    }, [limit, offset])
+
+        fetchDetails()
+    }, [initialLoaded, allPokemons, limit, offset, search])
 
     return { pokemons, loading, error, total }
-}
-
-interface usePokemonHook {
-    pokemon: Pokemon | null
-    loading: boolean
-    error: string | null
 }
 
 export const usePokemon = (name: string): usePokemonHook => {
