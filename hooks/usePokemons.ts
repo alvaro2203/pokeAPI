@@ -1,16 +1,18 @@
 import { usePokemonHook, usePokemonsHook } from "@/interfaces/hooks"
-import { Pokemon } from "@/interfaces/pokemon"
+import { Pokemon, PokemonBase } from "@/interfaces/pokemon"
 import { getPokemonByName, getAllPokemons } from "@/services/pokemon"
 import { useEffect, useState } from "react"
 
 
-export const usePokemons = (limit: number = 20, offset: number = 0, search: string = ""): usePokemonsHook => {
+export const usePokemons = (search: string = ""): usePokemonsHook => {
     const [pokemons, setPokemons] = useState<Pokemon[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
     const [total, setTotal] = useState<number>(0)
-    const [allPokemons, setAllPokemons] = useState<{ name: string, url: string }[]>([])
+    const [allPokemons, setAllPokemons] = useState<PokemonBase[]>([])
     const [initialLoaded, setInitialLoaded] = useState<boolean>(false)
+    const [offset, setOffset] = useState<number>(0)
+    const [limit, setLimit] = useState<number>(10)
 
     useEffect(() => {
         const loadAll = async () => {
@@ -40,13 +42,7 @@ export const usePokemons = (limit: number = 20, offset: number = 0, search: stri
                     : allPokemons
 
                 setTotal(filtered.length)
-
-                // 2. Paginate
-                // Ensure offset is valid for the new filtered list (handled by parent usually, but good to be safe)
-                // If offset is beyond total, we might render empty, which is fine, parent should reset offset.
                 const paginated = filtered.slice(offset, offset + limit)
-
-                // 3. Fetch Details
                 const details = await Promise.all(
                     paginated.map((p) => getPokemonByName(p.name))
                 )
@@ -63,7 +59,7 @@ export const usePokemons = (limit: number = 20, offset: number = 0, search: stri
         fetchDetails()
     }, [initialLoaded, allPokemons, limit, offset, search])
 
-    return { pokemons, loading, error, total }
+    return { pokemons, loading, error, total, offset, limit, setOffset, setLimit }
 }
 
 export const usePokemon = (name: string): usePokemonHook => {

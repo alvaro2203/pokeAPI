@@ -1,3 +1,4 @@
+import { useSearch } from "@/context/SearchContext";
 import {
   ChevronLeft,
   ChevronRight,
@@ -7,15 +8,6 @@ import {
 import { ButtonHTMLAttributes } from "react";
 
 type PageButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
-
-interface PaginationProps {
-  isPreviousDisabled: boolean;
-  isNextDisabled: boolean;
-  handleFirstPage: () => void;
-  handlePrevious: () => void;
-  handleNext: () => void;
-  handleLastPage: () => void;
-}
 
 const PageButton = ({ className, children, ...props }: PageButtonProps) => {
   return (
@@ -29,31 +21,44 @@ const PageButton = ({ className, children, ...props }: PageButtonProps) => {
   );
 };
 
-export default function Pagination({
-  isPreviousDisabled,
-  isNextDisabled,
-  handleFirstPage,
-  handlePrevious,
-  handleNext,
-  handleLastPage,
-}: PaginationProps) {
+export default function Pagination() {
+  const { total, offset, limit: LIMIT, setOffset } = useSearch();
+
+  const isPreviousDisabled = offset === 0;
+  const isNextDisabled = offset + LIMIT >= total;
+
+  const totalPages = Math.ceil(total / LIMIT);
+
+  const handleFirstPage = () => setOffset(0);
+  const handleNext = () => offset + LIMIT < total && setOffset(offset + LIMIT);
+  const handlePrevious = () => offset - LIMIT >= 0 && setOffset(offset - LIMIT);
+  const handleLastPage = () => setOffset((totalPages - 1) * LIMIT);
+
+  const currentPage = Math.ceil((offset + 1) / LIMIT);
+
   return (
-    <div className="flex space-x-2 items-center">
-      <PageButton onClick={handleFirstPage} disabled={isPreviousDisabled}>
-        <ChevronsLeft />
-      </PageButton>
+    <>
+      <span>Pokemons totales: {total}</span>
+      <span>
+        Página {currentPage} de {totalPages}
+      </span>
+      <div className="flex space-x-2 items-center">
+        <PageButton onClick={handleFirstPage} disabled={isPreviousDisabled}>
+          <ChevronsLeft />
+        </PageButton>
 
-      <PageButton onClick={handlePrevious} disabled={isPreviousDisabled}>
-        <ChevronLeft />
-      </PageButton>
+        <PageButton onClick={handlePrevious} disabled={isPreviousDisabled}>
+          <ChevronLeft />
+        </PageButton>
 
-      <PageButton onClick={handleNext} disabled={isNextDisabled}>
-        <ChevronRight />
-      </PageButton>
+        <PageButton onClick={handleNext} disabled={isNextDisabled}>
+          <ChevronRight />
+        </PageButton>
 
-      <PageButton onClick={handleLastPage} disabled={isNextDisabled}>
-        <ChevronsRight />
-      </PageButton>
-    </div>
+        <PageButton onClick={handleLastPage} disabled={isNextDisabled}>
+          <ChevronsRight />
+        </PageButton>
+      </div>
+    </>
   );
 }
