@@ -183,3 +183,26 @@ export const getAvailableSprite = (sprites: PokemonSprites): string => {
 
     return found || "/placeholder.svg";
 };
+
+export const getAllSprites = (sprites: PokemonSprites): string[] => {
+    const images: string[] = [];
+
+    const traverse = (obj: unknown) => {
+        if (!obj || typeof obj !== "object") return;
+
+        const record = obj as Record<string, unknown>;
+        for (const key in record) {
+            const value = record[key];
+            if (typeof value === "string" && value.startsWith("http")) {
+                images.push(value);
+            } else if (typeof value === "object") {
+                traverse(value);
+            }
+        }
+    };
+
+    traverse(sprites);
+
+    // Remove duplicates and return
+    return Array.from(new Set(images));
+};
