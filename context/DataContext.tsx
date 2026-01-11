@@ -4,7 +4,7 @@ import { usePokemons } from "@/hooks/usePokemons";
 import { Pokemon } from "@/interfaces/pokemon";
 import { createContext, useContext, useState, ReactNode } from "react";
 
-interface SearchContextType {
+interface DataContextType {
   search: string;
   setSearch: (search: string) => void;
   pokemons: Pokemon[];
@@ -17,9 +17,9 @@ interface SearchContextType {
   setOffset: (offset: number) => void;
 }
 
-const SearchContext = createContext<SearchContextType | undefined>(undefined);
+const DataContext = createContext<DataContextType | undefined>(undefined);
 
-export const SearchProvider = ({ children }: { children: ReactNode }) => {
+export const DataProvider = ({ children }: { children: ReactNode }) => {
   const [search, setSearch] = useState("");
   const {
     pokemons,
@@ -50,15 +50,13 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
     search,
   };
 
-  return (
-    <SearchContext.Provider value={data}>{children}</SearchContext.Provider>
-  );
+  return <DataContext.Provider value={data}>{children}</DataContext.Provider>;
 };
 
-export const useSearch = () => {
-  const context = useContext(SearchContext);
+export const useData = () => {
+  const context = useContext(DataContext);
   if (!context) {
-    throw new Error("useSearch must be used within a SearchProvider");
+    throw new Error("useData must be used within a DataProvider");
   }
   return context;
 };

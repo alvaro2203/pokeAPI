@@ -3,12 +3,12 @@
 import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import PokemonCard from "@/components/PokemonCard";
-import { useSearch } from "@/context/SearchContext";
+import { useData } from "@/context/DataContext";
 import { Pokemon } from "@/interfaces/pokemon";
 import Link from "next/link";
 
 export default function Home() {
-  const { pokemons: paginatedPokemons, loading, error } = useSearch();
+  const { pokemons: paginatedPokemons, loading, error } = useData();
 
   return (
     <div className="flex flex-col gap-3 items-center justify-center">

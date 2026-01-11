@@ -1,4 +1,4 @@
-import { useSearch } from "@/context/SearchContext";
+import { useData } from "@/context/DataContext";
 import {
   ChevronLeft,
   ChevronRight,
@@ -22,7 +22,7 @@ const PageButton = ({ className, children, ...props }: PageButtonProps) => {
 };
 
 export default function Pagination() {
-  const { total, offset, limit: LIMIT, setOffset } = useSearch();
+  const { total, offset, limit: LIMIT, setOffset } = useData();
 
   const isPreviousDisabled = offset === 0;
   const isNextDisabled = offset + LIMIT >= total;

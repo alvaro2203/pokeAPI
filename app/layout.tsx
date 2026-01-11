@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { SearchProvider } from "@/context/SearchContext";
+import { DataProvider } from "@/context/DataContext";
 import Header from "@/components/Header";
 
 export const metadata: Metadata = {
@@ -16,14 +16,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SearchProvider>
+        <DataProvider>
           <div className="min-h-screen flex flex-col py-10 bg-linear-to-br to-slate-700">
             <Header />
             <div className="flex-1 flex flex-col gap-4 items-center justify-center">
               {children}
             </div>
           </div>
-        </SearchProvider>
+        </DataProvider>
       </body>
     </html>
   );

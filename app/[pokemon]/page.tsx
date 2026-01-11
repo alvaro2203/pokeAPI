@@ -2,7 +2,7 @@
 
 import Badge from "@/components/Badge";
 import Loader from "@/components/Loader";
-import { useSearch } from "@/context/SearchContext";
+import { useData } from "@/context/DataContext";
 import { getAvailableSprite } from "@/interfaces/sprites";
 import { typeColors } from "@/lib/consts";
 import Image from "next/image";
@@ -10,7 +10,7 @@ import { useParams } from "next/navigation";
 
 export default function PokemonPage() {
   const { pokemon: pokemonName } = useParams();
-  const { pokemons, loading, error } = useSearch();
+  const { pokemons, loading, error } = useData();
   const pokemon = pokemons.find((p) => p.name === (pokemonName as string));
 
   if (loading) return <Loader />;

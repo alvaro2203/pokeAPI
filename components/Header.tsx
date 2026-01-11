@@ -1,12 +1,12 @@
 "use client";
 
-import { useSearch } from "@/context/SearchContext";
+import { useData } from "@/context/DataContext";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
-  const { search, setSearch } = useSearch();
+  const { search, setSearch } = useData();
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
