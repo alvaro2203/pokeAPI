@@ -2,7 +2,14 @@
 
 import { usePokemons } from "@/hooks/usePokemons";
 import { DataContextType } from "@/interfaces/context";
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useMemo,
+  useCallback,
+} from "react";
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
@@ -19,23 +26,40 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     setLimit,
   } = usePokemons(search);
 
-  const handleSearch = (termino: string) => {
-    setSearch(termino);
-    setOffset(0);
-  };
+  const handleSearch = useCallback(
+    (term: string) => {
+      setSearch(term);
+      setOffset(0);
+    },
+    [setSearch, setOffset]
+  );
 
-  const data = {
-    pokemons,
-    loading,
-    error,
-    total,
-    offset,
-    limit,
-    setSearch: handleSearch,
-    setOffset,
-    setLimit,
-    search,
-  };
+  const data = useMemo(
+    () => ({
+      pokemons,
+      loading,
+      error,
+      total,
+      offset,
+      limit,
+      setSearch: handleSearch,
+      setOffset,
+      setLimit,
+      search,
+    }),
+    [
+      pokemons,
+      loading,
+      error,
+      total,
+      offset,
+      limit,
+      search,
+      handleSearch,
+      setOffset,
+      setLimit,
+    ]
+  );
 
   return <DataContext.Provider value={data}>{children}</DataContext.Provider>;
 };
