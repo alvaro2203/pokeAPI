@@ -1,21 +1,8 @@
 "use client";
 
 import { usePokemons } from "@/hooks/usePokemons";
-import { Pokemon } from "@/interfaces/pokemon";
+import { DataContextType } from "@/interfaces/context";
 import { createContext, useContext, useState, ReactNode } from "react";
-
-interface DataContextType {
-  search: string;
-  setSearch: (search: string) => void;
-  pokemons: Pokemon[];
-  loading: boolean;
-  error: string | null;
-  total: number;
-  offset: number;
-  limit: number;
-  setLimit: (limit: number) => void;
-  setOffset: (offset: number) => void;
-}
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
