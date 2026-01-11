@@ -61,7 +61,26 @@ A modern, responsive web application built with [Next.js](https://nextjs.org/) a
 - `lib/`: Utility constants and helper functions.
 - `services/`: API integration services.
 
-## 🧩 Key Utilities
+## � State Management & Data Flow
+
+The application uses a **hybrid state stategy** to balance performance and user experience:
+
+### 1. Global Context (`DataContext`)
+
+- **Purpose**: Manages the main Pokémon list state.
+- **Logic**:
+  - Fetches a lightweight list of _all_ available Pokémon names on initial load (cached).
+  - Handles client-side pagination and filtering (search) against this full list.
+  - **Benefit**: Instant search feedback and preserved pagination state when navigating back from a detail page.
+
+### 2. Isolated Detail Hooks (`usePokemon`)
+
+- **Purpose**: Manages data for individual Pokémon detail pages (`/[pokemon]`).
+- **Logic**:
+  - Fetches detailed data (sprites, stats, etc.) on-demand for the specific Pokémon.
+  - **Benefit**: Supports **Deep Linking** and **Page Refreshes**. Users can share a link like `/charizard` and it will work independently of the global context state.
+
+## �🧩 Key Utilities
 
 ### Sprite Extraction (`interfaces/sprites.ts`)
 
