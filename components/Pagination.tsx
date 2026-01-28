@@ -13,8 +13,7 @@ const PageButton = ({ className, children, ...props }: PageButtonProps) => {
   return (
     <button
       {...props}
-      className={`text-white hover:text-yellow-300 cursor-pointer transition-colors 
-        duration-300 disabled:cursor-not-allowed disabled:text-gray-400 ${className}`}
+      className={`cursor-pointer text-white transition-colors duration-300 hover:text-yellow-300 disabled:cursor-not-allowed disabled:text-gray-400 ${className}`}
     >
       {children}
     </button>
@@ -42,7 +41,7 @@ export default function Pagination() {
       <span>
         Página {currentPage} de {totalPages}
       </span>
-      <div className="flex space-x-2 items-center">
+      <div className="flex items-center space-x-2">
         <PageButton onClick={handleFirstPage} disabled={isPreviousDisabled}>
           <ChevronsLeft />
         </PageButton>

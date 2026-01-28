@@ -17,9 +17,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <DataProvider>
-          <div className="min-h-screen flex flex-col py-10 bg-linear-to-br to-slate-700">
+          <div className="flex min-h-screen flex-col bg-linear-to-br to-slate-700 py-10">
             <Header />
-            <div className="flex-1 flex flex-col gap-4 items-center justify-center">
+            <div className="flex flex-1 flex-col items-center justify-center gap-4">
               {children}
             </div>
           </div>

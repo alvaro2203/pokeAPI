@@ -1,4 +1,3 @@
-
 import { GameIndex, NamedAPIResource } from "./common";
 import { PokemonHeldItem } from "./items";
 import { PokemonMove } from "./moves";
@@ -10,55 +9,55 @@ export * from "./moves";
 export * from "./sprites";
 
 export interface PokemonBase {
-    name: string;
-    url: string;
+  name: string;
+  url: string;
 }
 
 export interface Pokemon {
-    id: number;
-    name: string;
-    base_experience: number;
-    height: number;
-    is_default: boolean;
-    order: number;
-    weight: number;
-    abilities: PokemonAbility[];
-    forms: NamedAPIResource[];
-    game_indices: GameIndex[];
-    held_items: PokemonHeldItem[];
-    location_area_encounters: string;
-    moves: PokemonMove[];
-    past_types: PokemonPastType[];
-    sprites: PokemonSprites;
-    cries: PokemonCries;
-    species: NamedAPIResource;
-    stats: PokemonStat[];
-    types: PokemonType[];
+  id: number;
+  name: string;
+  base_experience: number;
+  height: number;
+  is_default: boolean;
+  order: number;
+  weight: number;
+  abilities: PokemonAbility[];
+  forms: NamedAPIResource[];
+  game_indices: GameIndex[];
+  held_items: PokemonHeldItem[];
+  location_area_encounters: string;
+  moves: PokemonMove[];
+  past_types: PokemonPastType[];
+  sprites: PokemonSprites;
+  cries: PokemonCries;
+  species: NamedAPIResource;
+  stats: PokemonStat[];
+  types: PokemonType[];
 }
 
 export interface PokemonAbility {
-    is_hidden: boolean;
-    slot: number;
-    ability: NamedAPIResource;
+  is_hidden: boolean;
+  slot: number;
+  ability: NamedAPIResource;
 }
 
 export interface PokemonType {
-    slot: number;
-    type: NamedAPIResource;
+  slot: number;
+  type: NamedAPIResource;
 }
 
 export interface PokemonPastType {
-    generation: NamedAPIResource;
-    types: PokemonType[];
+  generation: NamedAPIResource;
+  types: PokemonType[];
 }
 
 export interface PokemonStat {
-    base_stat: number;
-    effort: number;
-    stat: NamedAPIResource;
+  base_stat: number;
+  effort: number;
+  stat: NamedAPIResource;
 }
 
 export interface PokemonCries {
-    latest: string;
-    legacy: string;
+  latest: string;
+  legacy: string;
 }

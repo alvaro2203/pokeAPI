@@ -13,7 +13,7 @@ export default function GlobalNotFound() {
   return (
     <html lang="en" className={inter.className}>
       <body>
-        <div className="flex flex-col gap-4 min-h-screen items-center justify-center bg-linear-to-br to-slate-700">
+        <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-linear-to-br to-slate-700">
           <h1 className="text-4xl font-bold">404 - Page Not Found</h1>
           <p className="text-xl">This page does not exist.</p>
         </div>

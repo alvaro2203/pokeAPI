@@ -7,7 +7,7 @@ interface BreadcrumbProps {
 
 export default function Breadcrumb({ name }: BreadcrumbProps) {
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex items-center gap-2">
       <Link href="/" className="underline hover:text-yellow-300">
         Home
       </Link>
